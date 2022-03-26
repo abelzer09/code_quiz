@@ -1,14 +1,14 @@
 # html
 
 1. start screen with title, rules, start button, timer.
-2. question screen container with wuestion text, buttons, timer. feed back based on answer selected.
+2. question screen container with question text, buttons, timer. feed back based on answer selected.
 3. end of game container with final score, form to enter initials and submit button.
 4. high score page.
 
 
 # javescript
 
-1. delcare variables to reference GOM elements in your HTML.
+1. delcare variables to reference DOM elements in your HTML.
     -start quiz button
     -start screen element
     -timer element 
