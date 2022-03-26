@@ -7,6 +7,8 @@ var questionsEl = document.getElementById("questions");
 var counter = 0;
 var score = 0;
 var time = 5;
+var head = document.getElementById("header");
+
 
 startBtn.addEventListener("click",function(){
     var gameTimer = setInterval(function(){
