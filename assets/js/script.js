@@ -13,6 +13,13 @@ var head = document.getElementById("header");
 var base = false;
 var points = 5;
 var leader = document.getElementById("leaderBoard");
+
+questionsEl.setAttribute("class","hide")
+rulesEl.setAttribute("class", "show")
+highScorePage.setAttribute("class","hide")
+leader.setAttribute("class","hide")
+head.setAttribute("class","show")
+
 var quizQuestion = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
@@ -32,16 +39,26 @@ var quizQuestion = [
     
 }];
 
-highScorePage.setAttribute("class","hide")
+function resetGame (){
+    questionsEl.setAttribute("class","hide")
+    rulesEl.setAttribute("class", "show")
+    highScorePage.setAttribute("class","hide")
+    leader.setAttribute("class","hide")
+    head.setAttribute("class","show")
+}
 
 function scoreBoard (){
-    // scoresEl.setAttribute("class","show")
     scoreEl.textContent = "Score: " + scoreCounter;
 }
+
+document.getElementById("backBtn").addEventListener("click", resetGame);
 
 document.getElementById("submit").addEventListener("click", function(e){
     // alert("working")
     var userInitials = document.getElementById("initials").value;
+    leader.setAttribute("class","show")
+    highScorePage.setAttribute("class","hide")
+
     console.log(userInitials);
 })
 
@@ -55,7 +72,7 @@ function nextQuestion(event){
     }
     counter++;
     if (counter == quizQuestion.length){
-        return;
+        highScore();
     }
     
     scoreBoard();
@@ -76,6 +93,8 @@ function nextQuestion(event){
 
 function highScore(){
     highScorePage.setAttribute("class","show")
+    questionsEl.setAttribute("class","hide")
+    head.setAttribute("class","hide")
 
 }
 
@@ -109,16 +128,8 @@ function startQuiz() {
 
 
 function gameStart() {
-    if (rulesEl.style.display === "none") {
-        rulesEl.style.display = "block";
-    } else {
-        rulesEl.style.display = "none";
-    }
-    if (startBtn.style.display === "none") {
-        startBtn.style.display = "block";
-    } else {
-        startBtn.style.display = "none";
-    }
+   rulesEl.setAttribute("class", "hide")
+   questionsEl.setAttribute("class","show")
 }
 
 
