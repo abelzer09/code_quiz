@@ -37,14 +37,27 @@ var quizQuestion = [
     }];
 
 function resetGame() {
+    scoreBoard();
     inti();
 }
+
+scoresEl.addEventListener("click", function(){
+    questionsEl.setAttribute("class", "hide")
+    rulesEl.setAttribute("class", "hide")
+    highScorePage.setAttribute("class", "hide")
+    leader.setAttribute("class", "show")
+    head.setAttribute("class", "show")
+})
 
 function scoreBoard() {
     scoreEl.textContent = "Score: " + scoreCounter;
 }
 
-document.getElementById("backBtn").addEventListener("click", resetGame);
+document.getElementById("backBtn").addEventListener("click", function(){
+    scoreCounter = 0;
+    time = 0;
+    resetGame()
+});
 
 document.getElementById("submit").addEventListener("click", function (e) {
     // alert("working")
@@ -64,14 +77,15 @@ function nextQuestion(event) {
         time -= 15
     }
     counter++;
-    if (isWin && time > 0) {
-        // Clears interval and stops timer
-        clearInterval(gameTimer);
-        highScore();
-      }
-    // if (counter == quizQuestion.length) {
+    // if (isWin && time > 0) {
+    //     // Clears interval and stops timer
+    //     clearInterval(gameTimer);
     //     highScore();
-    // }
+    //   }
+    if (counter > 2 || time === 0) {
+        highScore();
+        clearInterval(gameTimer);
+    }
 
     scoreBoard();
     questionsEl.innerHTML = `
@@ -133,11 +147,12 @@ function gameStart() {
 }
 
 function inti(){
-    questionsEl.setAttribute("class", "hide")
-    rulesEl.setAttribute("class", "show")
-    highScorePage.setAttribute("class", "hide")
-    leader.setAttribute("class", "hide")
-    head.setAttribute("class", "show")
+    scoreCounter = 0;
+    questionsEl.setAttribute("class", "hide");
+    rulesEl.setAttribute("class", "show");
+    highScorePage.setAttribute("class", "hide");
+    leader.setAttribute("class", "hide");
+    head.setAttribute("class", "show");
 }
 
 startBtn.addEventListener("click", function(){
