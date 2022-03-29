@@ -6,13 +6,14 @@ var answersEl = document.getElementById("answers");
 var startBtn = document.getElementById("start");
 var questionsEl = document.getElementById("questions");
 var highScorePage = document.getElementById("hsPage");
-var counter = 0;
-var scoreCounter = 0;
-var time = 5;
+var counter;
+var scoreCounter;
+var time;
 var head = document.getElementById("header");
-var base = false;
-var points = 5;
+var isWin = false;
+// var points
 var leader = document.getElementById("leaderBoard");
+var gameTimer;
 
 inti();
 
@@ -63,9 +64,14 @@ function nextQuestion(event) {
         time -= 15
     }
     counter++;
-    if (counter == quizQuestion.length) {
+    if (isWin && time > 0) {
+        // Clears interval and stops timer
+        clearInterval(gameTimer);
         highScore();
-    }
+      }
+    // if (counter == quizQuestion.length) {
+    //     highScore();
+    // }
 
     scoreBoard();
     questionsEl.innerHTML = `
@@ -86,24 +92,26 @@ function nextQuestion(event) {
 function highScore() {
     highScorePage.setAttribute("class", "show")
     questionsEl.setAttribute("class", "hide")
-    head.setAttribute("class", "hide")
-
 }
 
 function startQuiz() {
-    var gameTimer = setInterval(function () {
-        time--;
-        if (time >= 0) {
-            var ptag = document.createElement("p");
-            ptag.textContent = "Time: " + time;
-            timerEl.innerHTML = "";
-            timerEl.appendChild(ptag);
-        } else {
-            clearInterval(gameTimer);
-            // alert("time up");
-            highScore();
-        }
-    }, 1000);
+    isWin = false;
+    counter = 0;
+    scoreCounter = 0;
+    time = 5;
+    // var gameTimer = setInterval(function () {
+    //     time--;
+    //     if (time >= 0) {
+    //         var ptag = document.createElement("p");
+    //         ptag.textContent = "Time: " + time;
+    //         timerEl.innerHTML = "";
+    //         timerEl.appendChild(ptag);
+    //     } else {
+    //         clearInterval(gameTimer);
+    //         // alert("time up");
+    //         highScore();
+    //     }
+    // }, 1000);
     gameStart();
     questionsEl.innerHTML = `
     <h3>${quizQuestion[counter].question}</h3>
@@ -132,4 +140,19 @@ function inti(){
     head.setAttribute("class", "show")
 }
 
-startBtn.addEventListener("click", startQuiz)
+startBtn.addEventListener("click", function(){
+    var gameTimer = setInterval(function () {
+        time--;
+        if (time >= 0) {
+            var ptag = document.createElement("p");
+            ptag.textContent = "Time: " + time;
+            timerEl.innerHTML = "";
+            timerEl.appendChild(ptag);
+        } else {
+            clearInterval(gameTimer);
+            // alert("time up");
+            highScore();
+        }
+    }, 1000);
+    startQuiz();
+})
