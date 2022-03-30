@@ -11,11 +11,16 @@ var scoreCounter;
 var time;
 var head = document.getElementById("header");
 var isWin = false;
-// var points
+var point = JSON.parse(localStorage.getItem("points"))
 var leader = document.getElementById("leaderBoard");
 var gameTimer;
+var player = document.getElementById("initials")
 
 inti();
+
+// function resetScore() {
+
+// }
 
 var quizQuestion = [
     {
@@ -35,6 +40,10 @@ var quizQuestion = [
         answer: "c"
 
     }];
+
+function setPoints(){
+    localStorage.setItem("points", scoreCounter);
+}    
 
 function resetGame() {
     scoreBoard();
@@ -61,7 +70,9 @@ document.getElementById("backBtn").addEventListener("click", function(){
 
 document.getElementById("submit").addEventListener("click", function (e) {
     // alert("working")
+    e.preventDefault()
     var userInitials = document.getElementById("initials").value;
+    localStorage.setItem("player", userInitials);
     leader.setAttribute("class", "show")
     highScorePage.setAttribute("class", "hide")
 
@@ -77,12 +88,8 @@ function nextQuestion(event) {
         time -= 15
     }
     counter++;
-    // if (isWin && time > 0) {
-    //     // Clears interval and stops timer
-    //     clearInterval(gameTimer);
-    //     highScore();
-    //   }
     if (counter > 2 || time === 0) {
+        setPoints();
         highScore();
         clearInterval(gameTimer);
     }
@@ -97,7 +104,7 @@ function nextQuestion(event) {
     `;
     var choices = document.querySelectorAll(".choices")
     for (var i = 0; i < choices.length; i++) {
-        choices[i].addEventListener("click", nextQuestion)
+        newFunction(choices,i);
     }
 }
 
@@ -113,19 +120,6 @@ function startQuiz() {
     counter = 0;
     scoreCounter = 0;
     time = 5;
-    // var gameTimer = setInterval(function () {
-    //     time--;
-    //     if (time >= 0) {
-    //         var ptag = document.createElement("p");
-    //         ptag.textContent = "Time: " + time;
-    //         timerEl.innerHTML = "";
-    //         timerEl.appendChild(ptag);
-    //     } else {
-    //         clearInterval(gameTimer);
-    //         // alert("time up");
-    //         highScore();
-    //     }
-    // }, 1000);
     gameStart();
     questionsEl.innerHTML = `
     <h3>${quizQuestion[counter].question}</h3>
@@ -136,23 +130,33 @@ function startQuiz() {
     `;
     var choices = document.querySelectorAll(".choices")
     for (var i = 0; i < choices.length; i++) {
-        choices[i].addEventListener("click", nextQuestion)
+        newFunction(choices, i);
     }
 }
 
 
+function newFunction(choices, i) {
+    choices[i].addEventListener("click", nextQuestion);
+}
+
 function gameStart() {
+    timerEl.setAttribute("class", "show")
+    scoresEl.setAttribute("class", "hide")
+    scoreEl.setAttribute("class", "show")
     rulesEl.setAttribute("class", "hide")
     questionsEl.setAttribute("class", "show")
 }
 
 function inti(){
     scoreCounter = 0;
+    timerEl.setAttribute("class", "hide");
+    scoresEl.setAttribute("class", "show");
     questionsEl.setAttribute("class", "hide");
     rulesEl.setAttribute("class", "show");
     highScorePage.setAttribute("class", "hide");
     leader.setAttribute("class", "hide");
     head.setAttribute("class", "show");
+    scoreEl.setAttribute("class", "hide")
 }
 
 startBtn.addEventListener("click", function(){
@@ -166,6 +170,7 @@ startBtn.addEventListener("click", function(){
         } else {
             clearInterval(gameTimer);
             // alert("time up");
+            setPoints();
             highScore();
         }
     }, 1000);

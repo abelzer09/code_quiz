@@ -4,3 +4,39 @@
 .show{
     display: block;
 }
+
+/* /#header{
+    text-align: center;
+} */
+
+#highScores{
+    text-align: left;
+}
+
+#timer{
+    text-align:left;
+}
+
+.jumbotron{
+    text-align: center;
+    background-color: white;
+
+}
+
+#header{
+    text-align: center;
+}
+
+#score{
+    text-align: right;
+}
+
+#rules{
+    text-align: center;
+}
+
+/* #highScores{
+    margin-top: -50px;
+    margin-left:10px;
+    color:blue;
+}  */
