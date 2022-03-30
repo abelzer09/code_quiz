@@ -18,7 +18,7 @@ var player = document.getElementById("initials")
 var scoresarr = [];
 
 // checks for stored highscores
-if (localStorage.getItem("highscores")){
+if (localStorage.getItem("highscores")) {
     scoresarr = JSON.parse(localStorage.getItem("highscores"))
 }
 
@@ -65,7 +65,7 @@ function resetGame() {
 }
 
 // Displays highscore board
-scoresEl.addEventListener("click", function(){
+scoresEl.addEventListener("click", function () {
     questionsEl.setAttribute("class", "hide")
     rulesEl.setAttribute("class", "hide")
     highScorePage.setAttribute("class", "hide")
@@ -79,7 +79,7 @@ function scoreBoard() {
 }
 
 //brings player back to homescreen
-document.getElementById("backBtn").addEventListener("click", function(){
+document.getElementById("backBtn").addEventListener("click", function () {
     scoreCounter = 0;
     time = 0;
     resetGame()
@@ -95,11 +95,11 @@ document.getElementById("submit").addEventListener("click", function (e) {
         score: scoreCounter,
     }
     scoresarr.push(userData)
-    localStorage.setItem("highscores",JSON.stringify(scoresarr));
-    
+    localStorage.setItem("highscores", JSON.stringify(scoresarr));
+
     leader.setAttribute("class", "show")
     highScorePage.setAttribute("class", "hide")
-    for (var i = 0; i < scoresarr.length; i++){
+    for (var i = 0; i < scoresarr.length; i++) {
         var li = document.createElement("li")
         li.innerText = `${scoresarr[i].initials}:${scoresarr[i].score}`
         leader.appendChild(li)
@@ -108,7 +108,7 @@ document.getElementById("submit").addEventListener("click", function (e) {
 
 //function to move from question to question
 function nextQuestion(event) {
-    if (counter +1 == quizQuestion.length){
+    if (counter + 1 == quizQuestion.length) {
         highScore();
         clearInterval(gameTimer)
         return;
@@ -120,7 +120,7 @@ function nextQuestion(event) {
         time -= 15
     }
     counter++;
-    
+
 
     scoreBoard();
     questionsEl.innerHTML = `
@@ -132,7 +132,7 @@ function nextQuestion(event) {
     `;
     var choices = document.querySelectorAll(".choices")
     for (var i = 0; i < choices.length; i++) {
-        newFunction(choices,i);
+        newFunction(choices, i);
     }
 }
 
@@ -190,7 +190,7 @@ function gameStart() {
 }
 
 //funtion for default home screen display
-function inti(){
+function inti() {
     scoreCounter = 0;
     timerEl.setAttribute("class", "hide");
     scoresEl.setAttribute("class", "show");
@@ -203,4 +203,4 @@ function inti(){
 }
 
 //begins the game
-startBtn.addEventListener("click",startQuiz)   
+startBtn.addEventListener("click", startQuiz)   
