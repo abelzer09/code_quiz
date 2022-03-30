@@ -45,4 +45,4 @@
 7. Create function to save high scores to local Storage.
 
 
-Start with one question to make sure it works no requirement for how many questions you have.
+!Start with one question to make sure it works no requirement for how many questions you have.

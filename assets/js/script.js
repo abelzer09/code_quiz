@@ -15,41 +15,56 @@ var point = JSON.parse(localStorage.getItem("points"))
 var leader = document.getElementById("leaderBoard");
 var gameTimer;
 var player = document.getElementById("initials")
+var scoresarr = [];
 
+// checks for stored highscores
+if (localStorage.getItem("highscores")){
+    scoresarr = JSON.parse(localStorage.getItem("highscores"))
+}
+
+// calls funtion that loads default state of page
 inti();
 
-// function resetScore() {
-
-// }
-
+// array of questions for quiz 
 var quizQuestion = [
     {
         question: "Inside which HTML element do we put the JavaScript?",
-        choices: ["javescript", "script", "scripting", "js"],
-        answer: "script"
+        choices: ["Javascript", "Script", "Scripting", "js"],
+        answer: "Script"
     }, {
 
-        question: "question2",
-        choices: ["a", "b", "c", "d"],
-        answer: "d"
+        question: "What is the language or list of instructions that are executed by the computer (how JavaScript is built)?",
+        choices: ["Scope", "JSON", "Syntax", "Output"],
+        answer: "Syntax"
 
     }, {
 
-        question: "question3",
-        choices: ["a", "b", "c", "d"],
-        answer: "c"
+        question: "In JavaScript, what element is used to store and manipulate text usually in multiples?",
+        choices: ["Strings", "Variables", "Functions", "Arrays"],
+        answer: "Strings"
 
-    }];
+    }, {
 
-function setPoints(){
-    localStorage.setItem("points", scoreCounter);
-}    
+        question: "What is a JavaScript element that represents either TRUE or FALSE values?",
+        choices: ["Event", "RegExp", "Boolean", "Condition"],
+        answer: "Boolean"
 
+    }, {
+
+        question: "What is considered to be the most popular programming language in the world?",
+        choices: ["Javascript", "HTML", "Swift", "Juby"],
+        answer: "Javascript"
+
+    },];
+
+
+// function to reset game to default display values
 function resetGame() {
     scoreBoard();
     inti();
 }
 
+// Displays highscore board
 scoresEl.addEventListener("click", function(){
     questionsEl.setAttribute("class", "hide")
     rulesEl.setAttribute("class", "hide")
@@ -58,41 +73,54 @@ scoresEl.addEventListener("click", function(){
     head.setAttribute("class", "show")
 })
 
+// fuction to display players score
 function scoreBoard() {
     scoreEl.textContent = "Score: " + scoreCounter;
 }
 
+//brings player back to homescreen
 document.getElementById("backBtn").addEventListener("click", function(){
     scoreCounter = 0;
     time = 0;
     resetGame()
 });
 
+// saves players scores in leader board
 document.getElementById("submit").addEventListener("click", function (e) {
     // alert("working")
     e.preventDefault()
     var userInitials = document.getElementById("initials").value;
-    localStorage.setItem("player", userInitials);
+    var userData = {
+        initials: userInitials,
+        score: scoreCounter,
+    }
+    scoresarr.push(userData)
+    localStorage.setItem("highscores",JSON.stringify(scoresarr));
+    
     leader.setAttribute("class", "show")
     highScorePage.setAttribute("class", "hide")
-
-    console.log(userInitials);
+    for (var i = 0; i < scoresarr.length; i++){
+        var li = document.createElement("li")
+        li.innerText = `${scoresarr[i].initials}:${scoresarr[i].score}`
+        leader.appendChild(li)
+    }
 })
 
+//function to move from question to question
 function nextQuestion(event) {
+    if (counter +1 == quizQuestion.length){
+        highScore();
+        clearInterval(gameTimer)
+        return;
+    }
     if (quizQuestion[counter].answer == event.target.value) {
         scoreCounter += 15
-        console.log(scoreCounter)
     }
     else {
         time -= 15
     }
     counter++;
-    if (counter > 2 || time === 0) {
-        setPoints();
-        highScore();
-        clearInterval(gameTimer);
-    }
+    
 
     scoreBoard();
     questionsEl.innerHTML = `
@@ -109,17 +137,31 @@ function nextQuestion(event) {
 }
 
 
-
+//funtion to toggle displayed content on leader board
 function highScore() {
     highScorePage.setAttribute("class", "show")
     questionsEl.setAttribute("class", "hide")
 }
 
+//function to begin quiz
 function startQuiz() {
+    gameTimer = setInterval(function () {
+        time--;
+        if (time >= 0) {
+            var ptag = document.createElement("p");
+            ptag.textContent = "Time: " + time;
+            timerEl.innerHTML = "";
+            timerEl.appendChild(ptag);
+        } else {
+            clearInterval(gameTimer);
+            // alert("time up");
+            highScore();
+        }
+    }, 1000);
     isWin = false;
     counter = 0;
     scoreCounter = 0;
-    time = 5;
+    time = 60;
     gameStart();
     questionsEl.innerHTML = `
     <h3>${quizQuestion[counter].question}</h3>
@@ -134,11 +176,11 @@ function startQuiz() {
     }
 }
 
-
 function newFunction(choices, i) {
     choices[i].addEventListener("click", nextQuestion);
 }
 
+//toggles display for playing game
 function gameStart() {
     timerEl.setAttribute("class", "show")
     scoresEl.setAttribute("class", "hide")
@@ -147,6 +189,7 @@ function gameStart() {
     questionsEl.setAttribute("class", "show")
 }
 
+//funtion for default home screen display
 function inti(){
     scoreCounter = 0;
     timerEl.setAttribute("class", "hide");
@@ -159,20 +202,5 @@ function inti(){
     scoreEl.setAttribute("class", "hide")
 }
 
-startBtn.addEventListener("click", function(){
-    var gameTimer = setInterval(function () {
-        time--;
-        if (time >= 0) {
-            var ptag = document.createElement("p");
-            ptag.textContent = "Time: " + time;
-            timerEl.innerHTML = "";
-            timerEl.appendChild(ptag);
-        } else {
-            clearInterval(gameTimer);
-            // alert("time up");
-            setPoints();
-            highScore();
-        }
-    }, 1000);
-    startQuiz();
-})
+//begins the game
+startBtn.addEventListener("click",startQuiz)   
